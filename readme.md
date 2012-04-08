@@ -38,10 +38,9 @@ examples
 	});
 	 
 ### send global push notification
-  app.push({channel: "", data: {alert: "Notification ", sound: ""}}, function (err, response) {
-  console.log(response);
-    
-});
+	app.push({channel: "", data: {alert: "Notification ", sound: ""}}, function (err, response) {
+	console.log(response);
+	});
 
 ### find one
 
