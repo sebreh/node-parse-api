@@ -16,7 +16,34 @@ if (!application_id || !master_key) {
 var parse = new Parse(application_id, master_key);
 var className = 'NodeParseApiTest';
 var object = { foo: Math.floor(Math.random() * 10000) };  // ERROR: if you change the type
+var user = { username: generateRandomString(8), password: generateRandomString(8) };
 var stub;
+
+exports.register = function (assert) {
+  parse.register(user, function (err, response) {
+    err && console.log(err);
+    assert.ok(response);
+    stub = response;
+    assert.done();
+  });
+};
+
+exports.login = function (assert) {
+  parse.login(user.username, user.password, function (err, response) {
+    err && console.log(err);
+    assert.ok(response);
+    stub = response;
+    assert.done();
+  });
+};
+
+exports.loginInvalid = function (assert) {
+  parse.login(user.username+'q', user.password+'x', function (err, response) {
+    assert.ok(err);
+    stub = response;
+    assert.done();
+  });
+};
 
 exports.insert = function (assert) {
   parse.insert(className, object, function (err, response) {
@@ -67,3 +94,11 @@ exports['delete'] = function (assert) {
     });
   });
 };
+
+function generateRandomString(length) {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    pos_len = possible.length;
+    for (var i=0; i < length; i++) text += possible.charAt(Math.floor(Math.random() * pos_len));
+    return text;
+}
