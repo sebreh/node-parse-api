@@ -16,11 +16,12 @@ if (!application_id || !master_key) {
 var parse = new Parse(application_id, master_key);
 var className = 'NodeParseApiTest';
 var object = { foo: Math.floor(Math.random() * 10000) };  // ERROR: if you change the type
-var user = { username: generateRandomString(8), password: generateRandomString(8) };
+var user = { username: generateRandomString(8), password: generateRandomString(8), email:'z@zcs.me' };
 var stub;
 
 exports.register = function (assert) {
   parse.register(user, function (err, response) {
+  	user = response;
     err && console.log(err);
     assert.ok(response);
     stub = response;
@@ -29,7 +30,25 @@ exports.register = function (assert) {
 };
 
 exports.login = function (assert) {
-  parse.login(user.username, user.password, function (err, response) {
+  parse.login(user, function (err, response) {
+    err && console.log(err);
+    assert.ok(response);
+    stub = response;
+    assert.done();
+  });
+};
+
+exports.findUser = function (assert) {
+  parse.findUser(user, function (err, response) {
+    err && console.log(err);
+    assert.ok(response);
+    stub = response;
+    assert.done();
+  });
+};
+
+exports.updateUser = function (assert) {
+  parse.updateUser(user.objectId, {username:generateRandomString(8)}, function (err, response) {
     err && console.log(err);
     assert.ok(response);
     stub = response;
@@ -38,8 +57,17 @@ exports.login = function (assert) {
 };
 
 exports.loginInvalid = function (assert) {
-  parse.login(user.username+'q', user.password+'x', function (err, response) {
+  parse.login(user, function (err, response) {
     assert.ok(err);
+    stub = response;
+    assert.done();
+  });
+};
+
+exports.deleteUser = function (assert) {
+  parse.deleteUser(user, function (err, response) {
+    err && console.log(err);
+    assert.ok(response);
     stub = response;
     assert.done();
   });
