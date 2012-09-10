@@ -1,7 +1,7 @@
 {
   "name": "parse-api",
   "description": "API for accessing Parse.com applications",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Chris Johnson <tenorviol@yahoo.com>, Will Russell <will@31ll.com>, Sebastian Rehnby <sebastian@rehnby.com>",
   "repository": "git://github.com/sebreh/node-parse-api",
   "main": "index",
